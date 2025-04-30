@@ -6,7 +6,7 @@
 /*   By: dviegas <dviegas@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:43:01 by dviegas           #+#    #+#             */
-/*   Updated: 2025/04/30 19:12:23 by dviegas          ###   ########.fr       */
+/*   Updated: 2025/04/30 19:27:14 by dviegas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@ char	*ft_read_to_left_str(int fd, char *left_str)
 	{
 		rd_bytes = read(fd, buff, BUFFER_SIZE);
 		if (rd_bytes == -1)
-			left_str = ft_strjoin(left_str, buff);
-		free(buff);
+		{
+			free(buff);
+			return (NULL);
+		}
+		buff[rd_bytes] = '\0';
+		left_str = ft_strjoin(left_str, buff);
 	}
+	free(buff);
     return (left_str);
 }
 char	*get_next_line(int fd)

@@ -5,69 +5,143 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dviegas <dviegas@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 18:43:01 by dviegas           #+#    #+#             */
-/*   Updated: 2025/04/30 19:27:14 by dviegas          ###   ########.fr       */
+/*   Created: 2025/05/13 11:29:34 by dviegas           #+#    #+#             */
+/*   Updated: 2025/05/13 15:59:14 by dviegas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-char	*ft_read_to_left_str(int fd, char *left_str)
-{
-	char	*buff;
-	int		rd_bytes;
+static char	*fill_line(int fd, char *left_c, char *buffer);
+static char	*set_line(char *line);
+static char	*ft_strchr(char *s, int c);
 
-	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buff)
-		return (NULL);
-	rd_bytes = 1;
-	while (!ft_strchr(left_str, '\n') && rd_bytes != 0)
-	{
-		rd_bytes = read(fd, buff, BUFFER_SIZE);
-		if (rd_bytes == -1)
-		{
-			free(buff);
-			return (NULL);
-		}
-		buff[rd_bytes] = '\0';
-		left_str = ft_strjoin(left_str, buff);
-	}
-	free(buff);
-    return (left_str);
-}
 char	*get_next_line(int fd)
 {
+	static char	*left_c;
 	char		*line;
-	static char	*left_str;
+	char		*buffer;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
-	left_str = ft_read_to_left_str(fd, left_str);
-	if (!left_str)
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		if (left_c)
+			free(left_c);
+		if (buffer)
+			free(buffer);
+		buffer = NULL;
+		left_c = NULL;
 		return (NULL);
-	line = ft_get_line(left_str);
-	left_str = ft_new_left_str(left_str);
+	}
+	if (!buffer)
+		return (NULL);
+	line = fill_line(fd, left_c, buffer);
+	free(buffer);
+	buffer = NULL;
+	if (!line)
+		return (NULL);
+	left_c = set_line(line);
 	return (line);
 }
 
+static char	*fill_line(int fd, char *left_c, char *buffer)
+{
+	ssize_t	bytes_read;
+	char	*tmp;
+
+	bytes_read = 1;
+	while (bytes_read > 0)
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(left_c);
+			return (NULL);
+		}
+		else if (bytes_read == 0)
+			break ;
+		buffer[bytes_read] = '\0';
+		if (!left_c)
+			left_c = ft_strdup("");
+		tmp = left_c;
+		left_c = ft_strjoin(tmp, buffer);
+		if (tmp)
+			free(tmp);
+		tmp = NULL;
+		if (ft_strchr(buffer, '\n'))
+			break ;
+	}
+	return (left_c);
+}
+
+static char	*set_line(char *line)
+{
+	char	*left_c;
+	ssize_t	i;
+
+	i = 0;
+	while (line[i] != '\n' && line[i] != '\0')
+		i++;
+	if (i == 0 && line[i] == '\0')
+		return (NULL);
+	if (line[i] == '\n')
+	{
+		left_c = ft_substr(line, i + 1, ft_strlen(line) - i);
+		line[i] = '\0';
+		if (*left_c == 0)
+		{
+			free(left_c);
+			left_c = NULL;
+		}
+		return (left_c);
+	}
+	else
+	{
+		return (NULL);
+	}
+}
+
+static char	*ft_strchr(char *s, int c)
+{
+	unsigned int	i;
+	char			cc;
+
+	cc = (char)c;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == cc)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if (s[i] == cc)
+		return ((char *)&s[i]);
+	return (NULL);
+}
+
+#include <errno.h>
 #include <fcntl.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int	main(void)
 {
-	char *line;
-	int i;
-	int fd1;
-	fd1 = open("tests/test.txt", O_RDONLY);
+	int		fd;
+	int		i;
+	char	*line;
 
-	i = 1;
+	fd = open("./tests/teste.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		perror("Erro ao abrir o arquivo");
+		return (1);
+	}
+	i = 0;
 	while (i < 7)
 	{
-		line = get_next_line(fd1);
-		printf("line [%02d]: %s", i, line);
-		free(line);
+		line = get_next_line(fd);
+		printf("output %d = %s \n", i, line);
 		i++;
 	}
-	close(fd1);
-	return (0);
 }

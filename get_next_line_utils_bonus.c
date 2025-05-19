@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dviegas <dviegas@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:43:39 by dviegas           #+#    #+#             */
-/*   Updated: 2025/05/19 17:49:45 by dviegas          ###   ########.fr       */
+/*   Updated: 2025/05/13 18:15:00 by dviegas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strdup(char *s1)
 {
@@ -66,13 +66,20 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char			*res;
-	unsigned int	i;
-	unsigned int	j;
+	char	*res;
 
 	res = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!res)
 		return (NULL);
+	fill_str(res, s1, s2);
+	return (res);
+}
+
+void	fill_str(char *res, char *s1, char *s2)
+{
+	unsigned int	i;
+	unsigned int	j;
+
 	i = 0;
 	j = 0;
 	while (s1[j])
@@ -81,23 +88,4 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j])
 		res[i++] = s2[j++];
 	res[i] = '\0';
-	return (res);
-}
-
-char	*ft_strchr(char *s, int c)
-{
-	unsigned int	i;
-	char			cc;
-
-	cc = (char)c;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == cc)
-			return ((char *)&s[i]);
-		i++;
-	}
-	if (s[i] == cc)
-		return ((char *)&s[i]);
-	return (NULL);
 }

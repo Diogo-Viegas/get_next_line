@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dviegas <dviegas@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:51:11 by dviegas           #+#    #+#             */
-/*   Updated: 2025/05/19 17:47:11 by dviegas          ###   ########.fr       */
+/*   Updated: 2025/05/14 14:24:02 by dviegas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 5
 # endif
+# define MAX_FD 10240
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -24,6 +25,6 @@ char	*ft_substr(char *s, unsigned int start, size_t len);
 size_t	ft_strlen(char *s);
 char	*ft_strdup(char *s1);
 char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strchr(char *s, int c);
+void	fill_str(char *res, char *s1, char *s2);
 
 #endif

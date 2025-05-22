@@ -5,26 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dviegas <dviegas@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 11:51:11 by dviegas           #+#    #+#             */
-/*   Updated: 2025/05/14 14:24:02 by dviegas          ###   ########.fr       */
+/*   Created: 2025/05/22 10:44:23 by dviegas           #+#    #+#             */
+/*   Updated: 2025/05/22 10:59:06 by dviegas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 5
 # endif
-# define MAX_FD 10240
+
 # include <fcntl.h>
+# include <limits.h>
+# include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <unistd.h>
 
+int		ft_strlen(char *c);
 char	*get_next_line(int fd);
-char	*ft_substr(char *s, unsigned int start, size_t len);
-size_t	ft_strlen(char *s);
-char	*ft_strdup(char *s1);
 char	*ft_strjoin(char *s1, char *s2);
-void	fill_str(char *res, char *s1, char *s2);
+int		ft_newline(char *str);
+void	ft_cleanread(char *actual_line, char *buffer_content);
 
 #endif

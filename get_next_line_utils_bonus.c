@@ -5,87 +5,85 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dviegas <dviegas@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 13:43:39 by dviegas           #+#    #+#             */
-/*   Updated: 2025/05/13 18:15:00 by dviegas          ###   ########.fr       */
+/*   Created: 2025/05/22 10:53:59 by dviegas           #+#    #+#             */
+/*   Updated: 2025/05/22 11:19:31 by dviegas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*ft_strdup(char *s1)
-{
-	char			*dest;
-	unsigned int	i;
-
-	dest = (char *)malloc(ft_strlen(s1) + 1);
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = 0;
-	return (dest);
-}
-
-size_t	ft_strlen(char *s)
+int	ft_strlen(char *c)
 {
 	int	i;
 
 	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char	*ft_substr(char *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	char	*str;
-
-	if (!s)
-		return (NULL);
-	if (start > ft_strlen(s))
-		return (malloc(1));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	str = malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (i < len)
+	if (c)
 	{
-		str[i] = s[start + i];
-		i++;
+		while (c[i])
+			i++;
 	}
-	str[i] = 0;
-	return (str);
+	return (i);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*res;
+	int		lens1;
+	int		lens2;
+	int		i;
+	int		j;
+	char	*str;
 
-	res = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!res)
+	lens1 = ft_strlen(s1);
+	lens2 = ft_strlen(s2);
+	str = (char *)malloc(lens1 + lens2 + 1);
+	if (str == NULL)
 		return (NULL);
-	fill_str(res, s1, s2);
-	return (res);
+	i = -1;
+	j = -1;
+	while (i++ < (lens1 - 1))
+		str[i] = s1[i];
+	while (j++ < (lens2 - 1))
+	{
+		str[i] = s2[j];
+		i++;
+	}
+	str[i] = '\0';
+	if (s1)
+		free(s1);
+	return (str);
 }
 
-void	fill_str(char *res, char *s1, char *s2)
+int	ft_newline(char *str)
 {
-	unsigned int	i;
-	unsigned int	j;
+	int	i;
 
 	i = 0;
-	j = 0;
-	while (s1[j])
-		res[i++] = s1[j++];
-	j = 0;
-	while (s2[j])
-		res[i++] = s2[j++];
-	res[i] = '\0';
+	if (!str)
+		return (-1);
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void	ft_cleanread(char *line, char *buffer)
+{
+	size_t	i;
+	int		sign;
+
+	i = 0;
+	sign = ft_newline(line);
+	if (sign != -1)
+	{
+		line[sign + 1] = '\0';
+		sign = ft_newline(buffer);
+		sign++;
+		while (buffer[sign])
+			buffer[i++] = buffer[sign++];
+	}
+	while (i < BUFFER_SIZE)
+		buffer[i++] = '\0';
 }

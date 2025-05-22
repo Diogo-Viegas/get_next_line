@@ -5,25 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dviegas <dviegas@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 11:51:11 by dviegas           #+#    #+#             */
-/*   Updated: 2025/05/19 17:47:11 by dviegas          ###   ########.fr       */
+/*   Created: 2025/05/22 10:44:23 by dviegas           #+#    #+#             */
+/*   Updated: 2025/05/22 10:44:25 by dviegas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 5
 # endif
+
 # include <fcntl.h>
+# include <limits.h>
+# include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <unistd.h>
 
+int		ft_strlen(char *c);
 char	*get_next_line(int fd);
-char	*ft_substr(char *s, unsigned int start, size_t len);
-size_t	ft_strlen(char *s);
-char	*ft_strdup(char *s1);
 char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strchr(char *s, int c);
+int		ft_newline(char *str);
+void	ft_cleanread(char *actual_line, char *buffer_content);
 
 #endif

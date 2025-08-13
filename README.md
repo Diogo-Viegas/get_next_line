@@ -1,4 +1,4 @@
-**get_next_line**
+
 Este projeto foi desenvolvido como parte do common core da 42 LIsboa para praticar a leitura de ficheiros linha a linha em C. O objetivo é implementar uma função chamada get_next_line que devolve a próxima linha lida de um file descriptor.
 
 **🧠 Objetivo**

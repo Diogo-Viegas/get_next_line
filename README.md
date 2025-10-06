@@ -1,34 +1,59 @@
+# 💾 Get Next Line: Persistent File Descriptor Reading
 
-Este projeto foi desenvolvido como parte do common core da 42 LIsboa para praticar a leitura de ficheiros linha a linha em C. O objetivo é implementar uma função chamada get_next_line que devolve a próxima linha lida de um file descriptor.
+## 42 Project | Static Variables, File Descriptors, and Buffering
 
-**🧠 Objetivo**
-Criar uma função que retorna uma linha de um file descriptor por chamada.
+Get Next Line is a fundamental project that requires programming a function capable of reading a line from any given file descriptor. The main challenge is to manage data persistence across multiple function calls, introducing the critical concept of static variables in C programming. This project teaches proper handling of read buffering, memory allocation, and the flexibility required to read from different sources (files, standard input, etc.).
 
-Trabalhar com buffers de leitura de tamanho variável.
+## 🎯 Project Objective
 
-Explorar o uso de variáveis estáticas para manter estado entre chamadas.
+The goal is to write a single function, get_next_line(), that can be called in a loop to read the text pointed to by a file descriptor, one line at a time.
 
-**(Bónus)** Suportar múltiplos file descriptors simultaneamente.
+The function must return the line that was read, including the terminating newline character (\n), unless the end of the file is reached without one. It must return NULL if nothing else remains to be read or an error occurs.
 
-**🔧 Compilação**
-A função deve ser compilada com a flag -D BUFFER_SIZE=n, onde n é o tamanho do buffer usado em cada leitura.
+## ✨ Prototype and Functionality
 
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c
+**Function Name** --> get_next_line
 
-**📌 Regras**
-A função deve retornar a linha lida incluindo o \n, exceto no final do ficheiro.
+**Prototype** --> 	char *get_next_line(int fd); 
 
-Se ocorrer um erro ou não houver mais nada a ler, deve retornar NULL.
+**Parameters** --> fd: The file descriptor to read from 
 
-A função não pode usar lseek(), variáveis globais nem a libft.
+**Return Value** --> Read line (correct behavior) / NULL (EOF or error) 
 
-O projeto deve compilar sem erros e sem leaks de memória.
+**External Functions** -> 	read, malloc, free
 
-A leitura deve ser feita de forma incremental, linha a linha, e não o ficheiro todo de uma vez.
+## ⚙️ Mandatory Requirements and Challenges
 
-**💡 Bónus**
-Se a parte obrigatória estiver 100% funcional, a parte bônus pode ser avaliada:
+### Buffering Management 
+The program must handle reading with various BUFFER_SIZE values, which are defined at compilation time using the -D BUFFER_SIZE=n flag.
 
-Utilização de apenas uma variável estática.
+### Persistence 
+The most complex aspect is using a static variable to save any leftover data from the buffer between calls to the function, allowing the next call to start where the previous one left off.
 
-Suporte a vários file descriptors sem perder estado entre eles.
+### Efficiency
+The function is required to read as little data as possible each time it is called, returning the current line immediately once a newline character is encountered.
+
+### Flexibility
+Must work correctly when reading from a regular file and when reading from the standard input (STDIN).
+
+## 🚀 Bonus Part: Multi-File Descriptor
+
+If the mandatory part is perfect, the bonus part requires enhancing get_next_line() to handle simultaneous reading from multiple file descriptors.
+
+### Simultaneous Handling
+The function must manage multiple file descriptors (e.g., fd 3, 4, and 5) at the same time.
+
+### State Integrity
+A call to read from one file descriptor must not affect the reading state of any other file descriptor.
+
+### Single Static Variable
+The entire bonus implementation must be developed using only one static variable.
+
+## 🚫 Forbidden Elements (Constraints)
+
+**Global Variables** 
+
+**lseek()**
+
+**Using libft** (Helper functions must be created manually in a separate file ).
+
